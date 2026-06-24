@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Liontrust Copilot — Consolidated Usage Jan–Jun 2026</title>
+<title>Liontrust AI Usage — Consolidated Jan–Jun 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -11,79 +11,97 @@
   --bg:#f0f4fb;--sf:#fff;--sf2:#e8edf7;--sf3:#f8faff;
   --bd:#d4daf0;--bd2:#b8c1de;
   --c:#1e40af;--cl:rgba(30,64,175,0.08);--cm:rgba(30,64,175,0.2);
-  --tx:#0f172a;--mu:#475569;--dm:#1e293b;--sub:#94a3b8;
-  --g:#059669;--gl:rgba(5,150,105,0.1);--gm:rgba(5,150,105,0.25);
+  --g:#059669;--gl:rgba(5,150,105,0.08);--gm:rgba(5,150,105,0.22);
   --a:#b45309;--al:rgba(180,83,9,0.1);
+  --tx:#0f172a;--mu:#475569;--dm:#1e293b;--sub:#94a3b8;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
 
+/* HEADER */
 .hdr{background:var(--sf);border-bottom:2px solid var(--bd);padding:0 40px;height:64px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 .hdr h1{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px;}
-.hdr h1 span{color:var(--c);}
+.hdr h1 span.cop{color:var(--c);}
+.hdr h1 span.gpt{color:var(--g);}
 .hdr-sub{font-size:10px;color:var(--mu);margin-top:3px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;}
 .pills{display:flex;gap:8px;}
 .pill{font-size:10px;font-weight:700;padding:5px 13px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
 .pill-c{background:var(--cl);border:1.5px solid var(--cm);color:var(--c);}
 .pill-g{background:var(--gl);border:1.5px solid var(--gm);color:var(--g);}
 
-.page{padding:28px 40px 48px;}
+/* TABS */
+.nav{display:flex;border-bottom:2px solid var(--bd);background:var(--sf);padding:0 40px;}
+.tab{padding:14px 24px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);margin-bottom:-2px;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+.tab:hover{color:var(--tx);}
+.tab.tc{color:var(--c);border-bottom-color:var(--c);}
+.tab.tg{color:var(--g);border-bottom-color:var(--g);}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+.dot-c{background:var(--c);}.dot-g{background:var(--g);}
+
+/* PANELS */
+.panel{display:none;padding:28px 40px 48px;}
+.panel.on{display:block;}
 
 /* KPI ROW */
 .krow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;}
-.kpi{background:var(--sf);border:1px solid var(--bd);border-top:4px solid var(--c);border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.kpi.kc{border-top:4px solid var(--c);}
+.kpi.kg{border-top:4px solid var(--g);}
 .kpi-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--mu);margin-bottom:8px;}
-.kpi-val{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--c);line-height:1;margin-bottom:4px;}
+.kpi-val{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1;margin-bottom:4px;}
+.kpi-val.vc{color:var(--c);}.kpi-val.vg{color:var(--g);}
 .kpi-sub{font-size:11px;color:var(--mu);font-weight:500;}
 
 /* CARDS */
 .card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
 .ct{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
 .ct span{color:var(--tx);}
-.mb16{margin-bottom:16px;}
 .mb24{margin-bottom:24px;}
 canvas{max-height:260px;}
-
-/* LAYOUT */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
-
-/* DEPT SECTION */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
 .sel{background:var(--sf);border:1.5px solid var(--bd);color:var(--tx);font-family:'Inter',sans-serif;font-size:11px;font-weight:500;padding:6px 10px;border-radius:7px;cursor:pointer;outline:none;}
 .sel:focus{border-color:var(--c);}
 
-/* DEPT CARDS GRID */
-.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
-.dept-card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px 18px;cursor:pointer;transition:all .15s;border-left:4px solid var(--c);}
-.dept-card:hover{border-color:var(--c);box-shadow:0 2px 8px rgba(30,64,175,0.12);}
-.dept-card.selected{background:var(--cl);border-color:var(--c);box-shadow:0 2px 12px rgba(30,64,175,0.15);}
+/* DEPT CARDS */
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.dc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;}
+.dc:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.dc.sel-c{background:var(--cl);border-color:var(--c);}
+.dc.sel-g{background:var(--gl);border-color:var(--g);}
+.dc.kc{border-left:4px solid var(--c);}
+.dc.kg{border-left:4px solid var(--g);}
 .dc-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tx);margin-bottom:8px;line-height:1.3;}
-.dc-stats{display:flex;justify-content:space-between;align-items:flex-end;}
-.dc-prompts{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--c);line-height:1;}
-.dc-prompts-lbl{font-size:9px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.dc-row{display:flex;justify-content:space-between;align-items:flex-end;}
+.dc-main{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1;}
+.dc-main.vc{color:var(--c);}.dc-main.vg{color:var(--g);}
+.dc-lbl{font-size:9px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
 .dc-users{text-align:right;}
-.dc-users-n{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--g);}
-.dc-users-lbl{font-size:9px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
-.dc-bar-wrap{width:100%;height:4px;background:var(--sf2);border-radius:2px;margin-top:10px;}
-.dc-bar{height:100%;border-radius:2px;background:var(--c);}
-.dc-adopt{font-size:10px;color:var(--mu);margin-top:4px;font-weight:500;}
+.dc-users-n{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
+.dc-users-n.vc{color:var(--c);}.dc-users-n.vg{color:var(--g);}
+.dc-bw{width:100%;height:4px;background:var(--sf2);border-radius:2px;margin-top:10px;}
+.dc-bar{height:100%;border-radius:2px;}
+.dc-bar.bc{background:var(--c);}.dc-bar.bg{background:var(--g);}
+.dc-adopt{font-size:9px;color:var(--mu);margin-top:4px;}
 
-/* DEPT DRILLDOWN */
-.drill-header{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px;}
-.drill-sub{font-size:11px;color:var(--mu);margin-bottom:16px;}
-.drill-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);}
-.drill-row:last-child{border:none;}
-.drill-rank{font-size:9px;font-weight:700;color:var(--sub);width:20px;flex-shrink:0;}
-.drill-info{flex:1;margin:0 10px;}
-.drill-name{font-size:12px;font-weight:600;color:var(--tx);}
-.drill-title{font-size:10px;color:var(--mu);margin-top:1px;}
-.drill-bw{width:90px;height:5px;background:var(--sf2);border-radius:3px;margin-right:10px;flex-shrink:0;}
-.drill-bar{height:100%;border-radius:3px;background:var(--c);}
-.drill-val{font-size:12px;font-weight:700;color:var(--tx);width:50px;text-align:right;flex-shrink:0;}
-.drill-tag{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;margin-left:6px;}
-.dt-a{background:#dcfce7;color:#166534;}.dt-i{background:var(--sf2);color:var(--sub);}
-.dt-b{background:var(--cl);color:var(--c);}
-.champ-badge{display:inline-flex;align-items:center;background:var(--al);border:1px solid rgba(180,83,9,.2);color:var(--a);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px;}
+/* DRILLDOWN */
+.dr-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);}
+.dr-row:last-child{border:none;}
+.dr-rank{font-size:9px;font-weight:700;color:var(--sub);width:20px;flex-shrink:0;}
+.dr-info{flex:1;margin:0 10px;}
+.dr-name{font-size:12px;font-weight:600;color:var(--tx);}
+.dr-title{font-size:10px;color:var(--mu);margin-top:1px;}
+.dr-bw{width:90px;height:5px;background:var(--sf2);border-radius:3px;margin-right:10px;flex-shrink:0;}
+.dr-bar{height:100%;border-radius:3px;}
+.dr-bar.bc{background:var(--c);}.dr-bar.bg{background:var(--g);}
+.dr-val{font-size:12px;font-weight:700;color:var(--tx);width:55px;text-align:right;flex-shrink:0;}
+.champ-wrap{background:var(--al);border:1px solid rgba(180,83,9,.15);border-radius:8px;padding:12px 14px;margin-bottom:14px;}
+.champ-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--a);margin-bottom:4px;}
+.champ-name{font-size:14px;font-weight:700;color:var(--tx);}
+.champ-title{font-size:10px;color:var(--mu);margin-top:2px;}
+.champ-badge{display:inline-flex;align-items:center;background:var(--al);border:1px solid rgba(180,83,9,.2);color:var(--a);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:6px;}
 .note{font-size:10px;color:var(--mu);padding:10px 0 0;font-style:italic;}
+.tag{display:inline-block;font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;text-transform:uppercase;margin-left:5px;}
+.ta{background:#dcfce7;color:#166534;}.ti{background:var(--sf2);color:var(--sub);}
 
 .footer{background:var(--sf);border-top:2px solid var(--bd);padding:14px 40px;font-size:10px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;}
 </style>
@@ -92,7 +110,7 @@ canvas{max-height:260px;}
 
 <div class="hdr">
   <div>
-    <h1>Liontrust <span>Copilot</span> — Consolidated Usage</h1>
+    <h1>Liontrust <span class="cop">Copilot</span> &amp; <span class="gpt">ChatGPT</span> — Consolidated Usage</h1>
     <div class="hdr-sub">AI Governance Group · Business Systems & Data</div>
   </div>
   <div class="pills">
@@ -101,288 +119,279 @@ canvas{max-height:260px;}
   </div>
 </div>
 
-<div class="page">
+<div class="nav">
+  <div class="tab tc on" onclick="showTab('cop',this)"><span class="dot dot-c"></span>Microsoft Copilot</div>
+  <div class="tab" onclick="showTab('gpt',this)"><span class="dot dot-g"></span>ChatGPT Enterprise</div>
+</div>
 
-  <!-- KPIs — dynamic -->
+<!-- ══════════ COPILOT ══════════ -->
+<div class="panel on" id="panel-cop">
   <div class="krow">
-    <div class="kpi"><div class="kpi-lbl">Licensed Seats</div><div class="kpi-val" id="k-seats">—</div><div class="kpi-sub">Staff on Copilot</div></div>
-    <div class="kpi"><div class="kpi-lbl">Active Users</div><div class="kpi-val" id="k-active">—</div><div class="kpi-sub" id="k-active-sub">—</div></div>
-    <div class="kpi"><div class="kpi-lbl">Total Prompts</div><div class="kpi-val" id="k-prompts">—</div><div class="kpi-sub" id="k-period">—</div></div>
-    <div class="kpi"><div class="kpi-lbl">Avg per Active User</div><div class="kpi-val" id="k-avg">—</div><div class="kpi-sub">Prompts per person</div></div>
-    <div class="kpi"><div class="kpi-lbl">Active All Periods</div><div class="kpi-val" id="k-all3">—</div><div class="kpi-sub">Consistent Jan–Jun</div></div>
+    <div class="kpi kc"><div class="kpi-lbl">Licensed Seats</div><div class="kpi-val vc" id="ck-seats">—</div><div class="kpi-sub">Staff on Copilot</div></div>
+    <div class="kpi kc"><div class="kpi-lbl">Active Users</div><div class="kpi-val vc" id="ck-active">—</div><div class="kpi-sub" id="ck-adopt">—</div></div>
+    <div class="kpi kc"><div class="kpi-lbl">Total Prompts</div><div class="kpi-val vc" id="ck-prompts">—</div><div class="kpi-sub" id="ck-period">—</div></div>
+    <div class="kpi kc"><div class="kpi-lbl">Avg per Active User</div><div class="kpi-val vc" id="ck-avg">—</div><div class="kpi-sub">Prompts per person</div></div>
+    <div class="kpi kc"><div class="kpi-lbl">Active All Periods</div><div class="kpi-val vc" id="ck-all3">—</div><div class="kpi-sub">Consistent Jan–Jun</div></div>
   </div>
 
-  <!-- TREND CHART -->
   <div class="card mb24">
-    <div class="ct">
-      <span>Usage Trend</span> — Monthly Prompts &amp; Active Users (Nov 2025 – May 2026)
-      <span style="font-size:10px;color:var(--mu);font-weight:500">Viva Insights weekly data · firm-wide</span>
+    <div class="ct"><span>Usage Trend</span> — Monthly Prompts &amp; Active Users (Nov 2025 – May 2026)
+      <span style="font-size:10px;color:var(--mu);font-weight:500">Viva Insights · firm-wide</span>
     </div>
-    <canvas id="trend-chart" style="max-height:250px"></canvas>
-    <p class="note">Trend data from Viva Insights weekly snapshots (firm-wide, not staff-filtered). Dept totals below use the detailed user-level files.</p>
+    <canvas id="cop-trend" style="max-height:240px"></canvas>
+    <p class="note">Viva Insights weekly data aggregated by month. Firm-wide figures, not staff-filtered. Dept totals below use the detailed user snapshots.</p>
   </div>
 
-  <!-- DEPT OVERVIEW CHART -->
   <div class="card mb24">
     <div class="ct">
       <span>Department Breakdown</span> — Prompts &amp; Active Users (Jan–Jun 2026)
-      <select class="sel" id="metric-sel" onchange="renderDeptChart()">
+      <select class="sel" id="cop-metric" onchange="renderCopDeptChart()">
         <option value="prompts">Sort by Prompts</option>
         <option value="active_users">Sort by Active Users</option>
         <option value="adoption">Sort by Adoption %</option>
       </select>
     </div>
-    <canvas id="dept-overview" style="max-height:420px"></canvas>
+    <canvas id="cop-dept-overview" style="max-height:400px"></canvas>
   </div>
 
-  <!-- DEPT CARDS + DRILLDOWN -->
-  <div class="g2 mb24" style="margin-bottom:24px">
+  <div class="g2">
     <div>
-      <div class="ct" style="margin-bottom:16px"><span>All Departments</span> — Click to drill down</div>
-      <div id="dept-cards"></div>
+      <div class="ct" style="margin-bottom:14px"><span>All Departments</span> — click to drill down</div>
+      <div class="dept-grid" id="cop-dept-cards"></div>
     </div>
-    <div class="card" style="height:fit-content;min-height:400px">
-      <div id="drill-content">
-        <div style="color:var(--sub);font-size:12px;padding:40px 0;text-align:center">
-          ← Click a department card to see individual users
-        </div>
-      </div>
+    <div class="card" style="min-height:400px">
+      <div id="cop-drill"><div style="color:var(--sub);font-size:12px;padding:60px 0;text-align:center">← Click a department card</div></div>
     </div>
   </div>
+</div>
 
+<!-- ══════════ CHATGPT ══════════ -->
+<div class="panel" id="panel-gpt">
+  <div class="krow">
+    <div class="kpi kg"><div class="kpi-lbl">Licensed Seats</div><div class="kpi-val vg" id="gk-seats">—</div><div class="kpi-sub">Staff on ChatGPT Enterprise</div></div>
+    <div class="kpi kg"><div class="kpi-lbl">Active Users</div><div class="kpi-val vg" id="gk-active">—</div><div class="kpi-sub" id="gk-adopt">—</div></div>
+    <div class="kpi kg"><div class="kpi-lbl">Total Messages</div><div class="kpi-val vg" id="gk-msgs">—</div><div class="kpi-sub" id="gk-period">—</div></div>
+    <div class="kpi kg"><div class="kpi-lbl">Avg per Active User</div><div class="kpi-val vg" id="gk-avg">—</div><div class="kpi-sub">Messages per person</div></div>
+    <div class="kpi kg"><div class="kpi-lbl">Inactive Seats</div><div class="kpi-val vg" id="gk-inactive">—</div><div class="kpi-sub">0 messages Jan–Jun</div></div>
+  </div>
+
+  <div class="card mb24">
+    <div class="ct">
+      <span>Department Breakdown</span> — Messages &amp; Active Users (Jan–Jun 2026)
+      <select class="sel" id="gpt-metric" onchange="renderGptDeptChart()">
+        <option value="messages">Sort by Messages</option>
+        <option value="active_users">Sort by Active Users</option>
+        <option value="adoption">Sort by Adoption %</option>
+      </select>
+    </div>
+    <canvas id="gpt-dept-overview" style="max-height:360px"></canvas>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="ct" style="margin-bottom:14px"><span>All Departments</span> — click to drill down</div>
+      <div class="dept-grid" id="gpt-dept-cards"></div>
+    </div>
+    <div class="card" style="min-height:400px">
+      <div id="gpt-drill"><div style="color:var(--sub);font-size:12px;padding:60px 0;text-align:center">← Click a department card</div></div>
+    </div>
+  </div>
 </div>
 
 <div class="footer">
-  <span>Liontrust Asset Management · Microsoft Copilot · Liontrust Staff Only</span>
-  <span>Sources: 90-day snapshot (Jan–Apr) + 30-day snapshot (May–Jun) + Viva Insights weekly trend</span>
+  <span>Liontrust Asset Management · AI Governance Group · Jan – Jun 2026 · Liontrust Staff Only</span>
+  <span>Sources: Copilot snapshots (90d + 30d + 30d) · ChatGPT Enterprise export · Viva Insights weekly trend</span>
 </div>
 
 <script>
 // DATA INJECTED BELOW
 
-const DEPT={"Compliance": {"prompts": 5787, "active_users": 11, "total_users": 11, "adoption": 100.0, "people": [{"name": "Noriko Sugiyama", "prompts": 1720, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Effie Pitsa", "prompts": 1294, "title": "Compliance Manager \u0096 Regulatory Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sophie Wrintmore", "prompts": 919, "title": "Compliance Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Milly Cooper", "prompts": 624, "title": "Head of Compliance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Shifa Abdela", "prompts": 483, "title": "Compliance Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sabine de Mornac", "prompts": 171, "title": "Compliance and Risk Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jasmine Chudasama", "prompts": 167, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jo Mann", "prompts": 162, "title": "Deputy Head of Compliance/MLRO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Matthew Hambly", "prompts": 110, "title": "Compliance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Elizabeth Balcombe", "prompts": 100, "title": "Compliance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Wisel Alban", "prompts": 37, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Business Systems & Data": {"prompts": 5027, "active_users": 11, "total_users": 11, "adoption": 100.0, "people": [{"name": "Tobenna Agubuche", "prompts": 1153, "title": "Junior Business Systems Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Abdi Osman", "prompts": 1033, "title": "Junior Business Systems Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tim Crunden", "prompts": 727, "title": "Head of Technology", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Bradburn", "prompts": 602, "title": "Senior Data Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Attwell", "prompts": 555, "title": "Business Systems and AI Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Davidson", "prompts": 396, "title": "Senior Data Architect", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sarah Hymers", "prompts": 223, "title": "Business Systems and AI Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Kelly Dormer-Phillips", "prompts": 143, "title": "Front Office Systems Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Moody", "prompts": 120, "title": "Business Intelligence Manager - Single Strategy", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Lalvani", "prompts": 42, "title": "Front Office Systems Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Phil Jones", "prompts": 33, "title": "Business Intelligence Manager - Multi Asset", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "IT & Infrastructure": {"prompts": 3824, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Paul Mathanarajah", "prompts": 2339, "title": "Head of IT Infrastructure and Cyber Security", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Justin Arrieta", "prompts": 535, "title": "Head of IT Support and Workplace Experience", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tom Grimes", "prompts": 347, "title": "Systems & Infrastructure Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Andrei Stan", "prompts": 281, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Murad Naqvi", "prompts": 106, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Zakaria Reffas", "prompts": 101, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephen Parnell", "prompts": 65, "title": "Systems & Infrastructure Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Karmjit Singh-Khalsa", "prompts": 50, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Sustainable Investment": {"prompts": 3606, "active_users": 9, "total_users": 9, "adoption": 100.0, "people": [{"name": "Mingming Huang", "prompts": 1918, "title": "Portfolio Manager Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Harriet Parker", "prompts": 418, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martyn Jones", "prompts": 368, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Ed Phelps", "prompts": 252, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Chris Foster", "prompts": 249, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Peter Michaelis", "prompts": 239, "title": "Head of Sustainable Investment", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sarah Nottle", "prompts": 70, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Simon Clements", "prompts": 65, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Mike Appleby", "prompts": 27, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "HR": {"prompts": 3412, "active_users": 6, "total_users": 6, "adoption": 100.0, "people": [{"name": "Fahima Begum", "prompts": 1070, "title": "HR Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Louise Dilworth", "prompts": 959, "title": "Head of Human Resources", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Georgia Walker", "prompts": 700, "title": "HR Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Fiona Ferguson-Loyd", "prompts": 337, "title": "HR Systems Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Catrina Stevens", "prompts": 232, "title": "Deputy Head of HR", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Katie Rice", "prompts": 114, "title": "Learning and Development Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Performance": {"prompts": 3140, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Jeri Chu", "prompts": 2186, "title": "Static Data Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Ross McQuillen", "prompts": 647, "title": "Head of Performance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Adam Clue", "prompts": 300, "title": "Deputy Head of Performance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Amr El-Abyad", "prompts": 7, "title": "Senior Performance Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Client Service": {"prompts": 3052, "active_users": 9, "total_users": 9, "adoption": 100.0, "people": [{"name": "Jemima Kenworthy", "prompts": 705, "title": "UK Client Service \u0096 Midlands and the North", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Peace Ajiboye", "prompts": 516, "title": "International and Institutional Client Service Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jessica Ironside", "prompts": 462, "title": "Head of International and Institutional Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vanessa Lawley", "prompts": 432, "title": "Head of UK Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Louise Twitchen", "prompts": 403, "title": "Sales Events Coordinator", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Catherine Smith", "prompts": 258, "title": "Platform Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sam Norton", "prompts": 156, "title": "UK Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sagar Mehta", "prompts": 84, "title": "UK Client Service - London", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hana Nawazish", "prompts": 36, "title": "Head of Sales Events", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Legal & CoSec": {"prompts": 2608, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Parmjit Ubhi", "prompts": 1271, "title": "Legal Counsel", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Isobel Stevens", "prompts": 869, "title": "Assistant, Company Secretariat & Legal", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Katie OBrien", "prompts": 397, "title": "Deputy Company Secretary", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Sally Buckmaster", "prompts": 71, "title": "General Counsel & Company Secretary", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Product, Stewardship and Governance": {"prompts": 2505, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Rupert Davies", "prompts": 1865, "title": "Stewardship and Governance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Clare Prince", "prompts": 272, "title": "Head of Product, Stewardship and Governance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Billy Mack", "prompts": 226, "title": "Product Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Ricken Amin", "prompts": 102, "title": "Product Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Calyn ChanGardner", "prompts": 40, "title": "Senior Product Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Finance": {"prompts": 2364, "active_users": 15, "total_users": 15, "adoption": 100.0, "people": [{"name": "Pieter Fourie", "prompts": 1227, "title": "Senior Financial Operations Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bijal Patel", "prompts": 431, "title": "Senior Corporate Reporting Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vicky Goulbourne", "prompts": 182, "title": "Head of Financial Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Robert Smith", "prompts": 110, "title": "Deputy Head of Finance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Emily Jones", "prompts": 67, "title": "Head of Internal Financial Reporting", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Andrew Barron", "prompts": 67, "title": "CASS Oversight Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tracey Alexander", "prompts": 65, "title": "Senior Fund Reporting Accountant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Milkica Pejovic", "prompts": 55, "title": "European Financial Controller", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tony Morrison", "prompts": 54, "title": "Head of Finance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Karyne Blackman", "prompts": 53, "title": "Management Accountant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stuart Smith", "prompts": 27, "title": "Head of CASS", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jack Dawson", "prompts": 16, "title": "Payroll Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debbie Ayres", "prompts": 4, "title": "Senior Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Caroline Davis", "prompts": 4, "title": "Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Natalie Smith", "prompts": 2, "title": "Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Risk": {"prompts": 2289, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Richard White", "prompts": 1433, "title": "Senior Enterprise Risk Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Guy Sommerville", "prompts": 419, "title": "Portfolio Risk Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Gary Lloyd", "prompts": 328, "title": "Head of Investment Risk", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martin Kearney", "prompts": 109, "title": "Chief Risk Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Sustainable Investment - Fixed Income": {"prompts": 1895, "active_users": 7, "total_users": 7, "adoption": 100.0, "people": [{"name": "Nancy Kondelidou", "prompts": 1304, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jack Willis", "prompts": 187, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kenny Watson", "prompts": 143, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Connor Godsell", "prompts": 107, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hannah Muir", "prompts": 104, "title": "Portfolio Manager Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Deepesh Marwaha", "prompts": 28, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Aitken Ross", "prompts": 22, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Investment Operations": {"prompts": 1893, "active_users": 10, "total_users": 10, "adoption": 100.0, "people": [{"name": "Andy Burgess", "prompts": 438, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Paul Murphy", "prompts": 431, "title": "Head of Investment Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Muhammad Arzani", "prompts": 274, "title": "Senior Manager Investment Operations Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Aliyah Rajan", "prompts": 269, "title": "Manager Operational Change", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Najeeb Mohammed", "prompts": 157, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Adrian Holmes", "prompts": 156, "title": "Head of Multi Asset Investment Support", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Chris Roberts", "prompts": 57, "title": "Senior Manager Derivatives Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Billy Trafford", "prompts": 45, "title": "Senior Manager Fund Accounting Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jonathan Heasman", "prompts": 41, "title": "Multi Asset Investment Support Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephanie Cameron", "prompts": 25, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "General Management": {"prompts": 1883, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Edward Catton", "prompts": 1448, "title": "Chief Operating Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Ions", "prompts": 295, "title": "Chief Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Helen Stone", "prompts": 72, "title": "EA to Fund Managers and COO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vinay Abrol", "prompts": 50, "title": "Chief Financial Officer", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Gail Penrice", "prompts": 18, "title": "Executive Assistant to the CEO and CFO/COO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Operations": {"prompts": 1768, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Lisa Lau", "prompts": 353, "title": "Senior RFP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Anya Page", "prompts": 274, "title": "Senior Marketing Manager, Presentations and DTP", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jacqueline McKillion", "prompts": 261, "title": "Literature Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Squires", "prompts": 237, "title": "Head of Marketing Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Michelle O-Kamara", "prompts": 220, "title": "RFP Writer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tracey Ashton", "prompts": 193, "title": "Presentations and DTP Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debbie Aschmann", "prompts": 150, "title": "RFP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Petrina Joseph", "prompts": 80, "title": "Presentations and DTP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Multi-Asset": {"prompts": 1471, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Anthony Chemla", "prompts": 856, "title": "Investment Manager, Multi-Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Husselbee", "prompts": 386, "title": "Head of Multi Asset", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Salisbury", "prompts": 126, "title": "Fund Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Klempster", "prompts": 103, "title": "Deputy Head Of Multi-Asset & Head Of Equities, Multi-Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Sales": {"prompts": 975, "active_users": 15, "total_users": 15, "adoption": 100.0, "people": [{"name": "Claude Ewen", "prompts": 153, "title": "International Sales Director - Germany and Austria", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kristian Cook", "prompts": 145, "title": "Head of Global Distribution", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Gary Higgs", "prompts": 128, "title": "Head of UK Wholesale Distribution", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bella Hill-Baker", "prompts": 119, "title": "Regional Sales Executive \u0096 North", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Oscar Andreu", "prompts": 119, "title": "Managing Director, Head of Distribution Switzerland", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Antonio Forte", "prompts": 102, "title": "International Sales Director - Italy", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "James Mowat", "prompts": 69, "title": "Head of Investment Companies", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Tim Hooton", "prompts": 31, "title": "Sales Manager London and South Africa", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Jack Morris", "prompts": 30, "title": "Regional Sales Executive - Midlands", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Anthony Drennan", "prompts": 24, "title": "Regional Sales Executive - South West", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jamie Stafford", "prompts": 20, "title": "Strategic Partners & Consolidators Relationship Manager \u0096 Midlan", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Graeme Southern", "prompts": 15, "title": "Regional Sales Manager - North, Scotland & Northern Ireland", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Kyle Barwell", "prompts": 10, "title": "Regional Sales Manager - Southeast", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sophie Andrews", "prompts": 6, "title": "Head of Strategic Partners & Consolidators", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Jonathan Harbottle", "prompts": 4, "title": "Regional Sales Manager - South West, South Wales & Ireland", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Corporate Development": {"prompts": 954, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "Edward Tinwell", "prompts": 682, "title": "Corporate Strategy Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Boyle", "prompts": 180, "title": "Chief Strategy Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephen Corbett", "prompts": 92, "title": "Head of Investor Relations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Economic Advantage": {"prompts": 907, "active_users": 7, "total_users": 7, "adoption": 100.0, "people": [{"name": "Matt Tonge", "prompts": 407, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Wedge", "prompts": 259, "title": "Fund Manager, Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Game", "prompts": 121, "title": "Fund Manager, Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Natalie Bell", "prompts": 59, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bobby Powar", "prompts": 32, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Victoria Stevens", "prompts": 21, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Anthony Cross", "prompts": 8, "title": "Head of Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Management & Content": {"prompts": 881, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Stephen Sheppard", "prompts": 321, "title": "Content Marketing Editor", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Aitken", "prompts": 244, "title": "Investment Writing Editor", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Cheryl Millar", "prompts": 201, "title": "PA to Chief Marketing Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kieran Patel", "prompts": 71, "title": "Content Writer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Simon Hildrey", "prompts": 44, "title": "Chief Marketing Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Global Equities": {"prompts": 708, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Vanessa Sinclair", "prompts": 210, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kevin Kruczynski", "prompts": 173, "title": "Fund Manger, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Magda Bui", "prompts": 88, "title": "Personal Assistant, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Pieran Maru", "prompts": 86, "title": "Fund Manager, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Ewan Thompson", "prompts": 79, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Goodman", "prompts": 38, "title": "Investment Manager, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Thomas Smith", "prompts": 17, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Mark Hawtin", "prompts": 17, "title": "Head of the Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Digital": {"prompts": 591, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Amy Lloyd", "prompts": 406, "title": "Digital Marketing Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hayley Aronberg", "prompts": 103, "title": "Head of Digital Marketing", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debora Barros", "prompts": 43, "title": "Digital Marketing Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Harrison", "prompts": 39, "title": "Digital Marketing Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Facilities": {"prompts": 462, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Jannine Weston", "prompts": 406, "title": "Office Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Brittney Anderson", "prompts": 24, "title": "Office Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jan Simpson", "prompts": 23, "title": "Senior Receptionist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Grace Halliday", "prompts": 9, "title": "Office Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Multi-Asset - Fixed Income": {"prompts": 264, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "Donald Phillips", "prompts": 187, "title": "Head Of Credit, Multi Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sharmin Rahman", "prompts": 71, "title": "Investment Manager, Multi Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Philip Milburn", "prompts": 6, "title": "Head Of Rates, Multi Asset Team", "active": true, "active_jan_apr": false, "active_apr_may": true, "active_may_jun": true, "periods": 2}]}, "Client Operations": {"prompts": 156, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Lynn Swettenham", "prompts": 118, "title": "Manager, Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Marcus Williams", "prompts": 32, "title": "Senior Manager Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martina Huntley", "prompts": 5, "title": "Head of Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Sarah McDonald", "prompts": 1, "title": "Senior Manager, Client Operation", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Fund Management - GFT": {"prompts": 109, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Gabriel Lever Grecu", "prompts": 77, "title": "Equity Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Imran Sattar", "prompts": 14, "title": "Head of the Global Fundamental Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tom Gilbey", "prompts": 13, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Emily Barnard", "prompts": 5, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Fund Management - Global Innovation": {"prompts": 109, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "James OConnor", "prompts": 72, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Clare P-Bouverie", "prompts": 21, "title": "Co-Head of the Global Innovation Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Storm Uru", "prompts": 16, "title": "Co-Head of the Global Innovation Team", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Fund Management - Cashflow Solution": {"prompts": 53, "active_users": 2, "total_users": 2, "adoption": 100.0, "people": [{"name": "James Inglis-Jones", "prompts": 35, "title": "Co-Head Cashflow Solutions Team", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Samantha Gleave", "prompts": 18, "title": "Co-Head Cashflow Solutions Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}};
+const COP_DEPT={"Compliance": {"prompts": 5787, "active_users": 11, "total_users": 11, "adoption": 100.0, "people": [{"name": "Noriko Sugiyama", "prompts": 1720, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Effie Pitsa", "prompts": 1294, "title": "Compliance Manager \u0096 Regulatory Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sophie Wrintmore", "prompts": 919, "title": "Compliance Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Milly Cooper", "prompts": 624, "title": "Head of Compliance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Shifa Abdela", "prompts": 483, "title": "Compliance Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sabine de Mornac", "prompts": 171, "title": "Compliance and Risk Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jasmine Chudasama", "prompts": 167, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jo Mann", "prompts": 162, "title": "Deputy Head of Compliance/MLRO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Matthew Hambly", "prompts": 110, "title": "Compliance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Elizabeth Balcombe", "prompts": 100, "title": "Compliance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Wisel Alban", "prompts": 37, "title": "Compliance Executive", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Business Systems & Data": {"prompts": 5027, "active_users": 11, "total_users": 11, "adoption": 100.0, "people": [{"name": "Tobenna Agubuche", "prompts": 1153, "title": "Junior Business Systems Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Abdi Osman", "prompts": 1033, "title": "Junior Business Systems Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tim Crunden", "prompts": 727, "title": "Head of Technology", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Bradburn", "prompts": 602, "title": "Senior Data Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Attwell", "prompts": 555, "title": "Business Systems and AI Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Davidson", "prompts": 396, "title": "Senior Data Architect", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sarah Hymers", "prompts": 223, "title": "Business Systems and AI Lead", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Kelly Dormer-Phillips", "prompts": 143, "title": "Front Office Systems Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Moody", "prompts": 120, "title": "Business Intelligence Manager - Single Strategy", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Lalvani", "prompts": 42, "title": "Front Office Systems Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Phil Jones", "prompts": 33, "title": "Business Intelligence Manager - Multi Asset", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "IT & Infrastructure": {"prompts": 3824, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Paul Mathanarajah", "prompts": 2339, "title": "Head of IT Infrastructure and Cyber Security", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Justin Arrieta", "prompts": 535, "title": "Head of IT Support and Workplace Experience", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tom Grimes", "prompts": 347, "title": "Systems & Infrastructure Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Andrei Stan", "prompts": 281, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Murad Naqvi", "prompts": 106, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Zakaria Reffas", "prompts": 101, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephen Parnell", "prompts": 65, "title": "Systems & Infrastructure Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Karmjit Singh-Khalsa", "prompts": 50, "title": "IT Support Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Sustainable Investment": {"prompts": 3606, "active_users": 9, "total_users": 9, "adoption": 100.0, "people": [{"name": "Mingming Huang", "prompts": 1918, "title": "Portfolio Manager Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Harriet Parker", "prompts": 418, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martyn Jones", "prompts": 368, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Ed Phelps", "prompts": 252, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Chris Foster", "prompts": 249, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Peter Michaelis", "prompts": 239, "title": "Head of Sustainable Investment", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sarah Nottle", "prompts": 70, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Simon Clements", "prompts": 65, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Mike Appleby", "prompts": 27, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "HR": {"prompts": 3412, "active_users": 6, "total_users": 6, "adoption": 100.0, "people": [{"name": "Fahima Begum", "prompts": 1070, "title": "HR Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Louise Dilworth", "prompts": 959, "title": "Head of Human Resources", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Georgia Walker", "prompts": 700, "title": "HR Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Fiona Ferguson-Loyd", "prompts": 337, "title": "HR Systems Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Catrina Stevens", "prompts": 232, "title": "Deputy Head of HR", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Katie Rice", "prompts": 114, "title": "Learning and Development Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Performance": {"prompts": 3140, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Jeri Chu", "prompts": 2186, "title": "Static Data Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Ross McQuillen", "prompts": 647, "title": "Head of Performance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Adam Clue", "prompts": 300, "title": "Deputy Head of Performance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Amr El-Abyad", "prompts": 7, "title": "Senior Performance Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Client Service": {"prompts": 3052, "active_users": 9, "total_users": 9, "adoption": 100.0, "people": [{"name": "Jemima Kenworthy", "prompts": 705, "title": "UK Client Service \u0096 Midlands and the North", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Peace Ajiboye", "prompts": 516, "title": "International and Institutional Client Service Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jessica Ironside", "prompts": 462, "title": "Head of International and Institutional Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vanessa Lawley", "prompts": 432, "title": "Head of UK Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Louise Twitchen", "prompts": 403, "title": "Sales Events Coordinator", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Catherine Smith", "prompts": 258, "title": "Platform Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sam Norton", "prompts": 156, "title": "UK Client Service", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sagar Mehta", "prompts": 84, "title": "UK Client Service - London", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hana Nawazish", "prompts": 36, "title": "Head of Sales Events", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Legal & CoSec": {"prompts": 2608, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Parmjit Ubhi", "prompts": 1271, "title": "Legal Counsel", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Isobel Stevens", "prompts": 869, "title": "Assistant, Company Secretariat & Legal", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Katie OBrien", "prompts": 397, "title": "Deputy Company Secretary", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Sally Buckmaster", "prompts": 71, "title": "General Counsel & Company Secretary", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Product, Stewardship and Governance": {"prompts": 2505, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Rupert Davies", "prompts": 1865, "title": "Stewardship and Governance Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Clare Prince", "prompts": 272, "title": "Head of Product, Stewardship and Governance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Billy Mack", "prompts": 226, "title": "Product Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Ricken Amin", "prompts": 102, "title": "Product Associate", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Calyn ChanGardner", "prompts": 40, "title": "Senior Product Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Finance": {"prompts": 2364, "active_users": 15, "total_users": 15, "adoption": 100.0, "people": [{"name": "Pieter Fourie", "prompts": 1227, "title": "Senior Financial Operations Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bijal Patel", "prompts": 431, "title": "Senior Corporate Reporting Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vicky Goulbourne", "prompts": 182, "title": "Head of Financial Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Robert Smith", "prompts": 110, "title": "Deputy Head of Finance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Emily Jones", "prompts": 67, "title": "Head of Internal Financial Reporting", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Andrew Barron", "prompts": 67, "title": "CASS Oversight Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tracey Alexander", "prompts": 65, "title": "Senior Fund Reporting Accountant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Milkica Pejovic", "prompts": 55, "title": "European Financial Controller", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tony Morrison", "prompts": 54, "title": "Head of Finance", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Karyne Blackman", "prompts": 53, "title": "Management Accountant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stuart Smith", "prompts": 27, "title": "Head of CASS", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jack Dawson", "prompts": 16, "title": "Payroll Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debbie Ayres", "prompts": 4, "title": "Senior Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Caroline Davis", "prompts": 4, "title": "Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Natalie Smith", "prompts": 2, "title": "Finance Administrator", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Risk": {"prompts": 2289, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Richard White", "prompts": 1433, "title": "Senior Enterprise Risk Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Guy Sommerville", "prompts": 419, "title": "Portfolio Risk Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Gary Lloyd", "prompts": 328, "title": "Head of Investment Risk", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martin Kearney", "prompts": 109, "title": "Chief Risk Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Sustainable Investment - Fixed Income": {"prompts": 1895, "active_users": 7, "total_users": 7, "adoption": 100.0, "people": [{"name": "Nancy Kondelidou", "prompts": 1304, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jack Willis", "prompts": 187, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kenny Watson", "prompts": 143, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Connor Godsell", "prompts": 107, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hannah Muir", "prompts": 104, "title": "Portfolio Manager Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Deepesh Marwaha", "prompts": 28, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Aitken Ross", "prompts": 22, "title": "Investment Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Investment Operations": {"prompts": 1893, "active_users": 10, "total_users": 10, "adoption": 100.0, "people": [{"name": "Andy Burgess", "prompts": 438, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Paul Murphy", "prompts": 431, "title": "Head of Investment Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Muhammad Arzani", "prompts": 274, "title": "Senior Manager Investment Operations Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Aliyah Rajan", "prompts": 269, "title": "Manager Operational Change", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Najeeb Mohammed", "prompts": 157, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Adrian Holmes", "prompts": 156, "title": "Head of Multi Asset Investment Support", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Chris Roberts", "prompts": 57, "title": "Senior Manager Derivatives Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Billy Trafford", "prompts": 45, "title": "Senior Manager Fund Accounting Oversight", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jonathan Heasman", "prompts": 41, "title": "Multi Asset Investment Support Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephanie Cameron", "prompts": 25, "title": "Investment Operations Oversight Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "General Management": {"prompts": 1883, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Edward Catton", "prompts": 1448, "title": "Chief Operating Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Ions", "prompts": 295, "title": "Chief Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Helen Stone", "prompts": 72, "title": "EA to Fund Managers and COO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Vinay Abrol", "prompts": 50, "title": "Chief Financial Officer", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Gail Penrice", "prompts": 18, "title": "Executive Assistant to the CEO and CFO/COO", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Operations": {"prompts": 1768, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Lisa Lau", "prompts": 353, "title": "Senior RFP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Anya Page", "prompts": 274, "title": "Senior Marketing Manager, Presentations and DTP", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jacqueline McKillion", "prompts": 261, "title": "Literature Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Squires", "prompts": 237, "title": "Head of Marketing Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Michelle O-Kamara", "prompts": 220, "title": "RFP Writer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tracey Ashton", "prompts": 193, "title": "Presentations and DTP Specialist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debbie Aschmann", "prompts": 150, "title": "RFP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Petrina Joseph", "prompts": 80, "title": "Presentations and DTP Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Multi-Asset": {"prompts": 1471, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Anthony Chemla", "prompts": 856, "title": "Investment Manager, Multi-Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Husselbee", "prompts": 386, "title": "Head of Multi Asset", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Salisbury", "prompts": 126, "title": "Fund Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "James Klempster", "prompts": 103, "title": "Deputy Head Of Multi-Asset & Head Of Equities, Multi-Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Sales": {"prompts": 975, "active_users": 15, "total_users": 15, "adoption": 100.0, "people": [{"name": "Claude Ewen", "prompts": 153, "title": "International Sales Director - Germany and Austria", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kristian Cook", "prompts": 145, "title": "Head of Global Distribution", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Gary Higgs", "prompts": 128, "title": "Head of UK Wholesale Distribution", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bella Hill-Baker", "prompts": 119, "title": "Regional Sales Executive \u0096 North", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Oscar Andreu", "prompts": 119, "title": "Managing Director, Head of Distribution Switzerland", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Antonio Forte", "prompts": 102, "title": "International Sales Director - Italy", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "James Mowat", "prompts": 69, "title": "Head of Investment Companies", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Tim Hooton", "prompts": 31, "title": "Sales Manager London and South Africa", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Jack Morris", "prompts": 30, "title": "Regional Sales Executive - Midlands", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Anthony Drennan", "prompts": 24, "title": "Regional Sales Executive - South West", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jamie Stafford", "prompts": 20, "title": "Strategic Partners & Consolidators Relationship Manager \u0096 Midlan", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Graeme Southern", "prompts": 15, "title": "Regional Sales Manager - North, Scotland & Northern Ireland", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Kyle Barwell", "prompts": 10, "title": "Regional Sales Manager - Southeast", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sophie Andrews", "prompts": 6, "title": "Head of Strategic Partners & Consolidators", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Jonathan Harbottle", "prompts": 4, "title": "Regional Sales Manager - South West, South Wales & Ireland", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Corporate Development": {"prompts": 954, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "Edward Tinwell", "prompts": 682, "title": "Corporate Strategy Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Boyle", "prompts": 180, "title": "Chief Strategy Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Stephen Corbett", "prompts": 92, "title": "Head of Investor Relations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Economic Advantage": {"prompts": 907, "active_users": 7, "total_users": 7, "adoption": 100.0, "people": [{"name": "Matt Tonge", "prompts": 407, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Wedge", "prompts": 259, "title": "Fund Manager, Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Alex Game", "prompts": 121, "title": "Fund Manager, Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Natalie Bell", "prompts": 59, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Bobby Powar", "prompts": 32, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Victoria Stevens", "prompts": 21, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}, {"name": "Anthony Cross", "prompts": 8, "title": "Head of Economic Advantage", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Management & Content": {"prompts": 881, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Stephen Sheppard", "prompts": 321, "title": "Content Marketing Editor", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Aitken", "prompts": 244, "title": "Investment Writing Editor", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Cheryl Millar", "prompts": 201, "title": "PA to Chief Marketing Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kieran Patel", "prompts": 71, "title": "Content Writer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Simon Hildrey", "prompts": 44, "title": "Chief Marketing Officer", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Global Equities": {"prompts": 708, "active_users": 8, "total_users": 8, "adoption": 100.0, "people": [{"name": "Vanessa Sinclair", "prompts": 210, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Kevin Kruczynski", "prompts": 173, "title": "Fund Manger, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Magda Bui", "prompts": 88, "title": "Personal Assistant, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Pieran Maru", "prompts": 86, "title": "Fund Manager, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Ewan Thompson", "prompts": 79, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "David Goodman", "prompts": 38, "title": "Investment Manager, Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Thomas Smith", "prompts": 17, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": false, "periods": 2}, {"name": "Mark Hawtin", "prompts": 17, "title": "Head of the Global Equities Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Marketing - Digital": {"prompts": 591, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Amy Lloyd", "prompts": 406, "title": "Digital Marketing Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Hayley Aronberg", "prompts": 103, "title": "Head of Digital Marketing", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Debora Barros", "prompts": 43, "title": "Digital Marketing Executive", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "John Harrison", "prompts": 39, "title": "Digital Marketing Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Facilities": {"prompts": 462, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Jannine Weston", "prompts": 406, "title": "Office Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Brittney Anderson", "prompts": 24, "title": "Office Assistant", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Jan Simpson", "prompts": 23, "title": "Senior Receptionist", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Grace Halliday", "prompts": 9, "title": "Office Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}, "Fund Management - Multi-Asset - Fixed Income": {"prompts": 264, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "Donald Phillips", "prompts": 187, "title": "Head Of Credit, Multi Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Sharmin Rahman", "prompts": 71, "title": "Investment Manager, Multi Asset Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Philip Milburn", "prompts": 6, "title": "Head Of Rates, Multi Asset Team", "active": true, "active_jan_apr": false, "active_apr_may": true, "active_may_jun": true, "periods": 2}]}, "Client Operations": {"prompts": 156, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Lynn Swettenham", "prompts": 118, "title": "Manager, Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Marcus Williams", "prompts": 32, "title": "Senior Manager Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Martina Huntley", "prompts": 5, "title": "Head of Client Operations", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Sarah McDonald", "prompts": 1, "title": "Senior Manager, Client Operation", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": false, "periods": 1}]}, "Fund Management - GFT": {"prompts": 109, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Gabriel Lever Grecu", "prompts": 77, "title": "Equity Analyst", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Imran Sattar", "prompts": 14, "title": "Head of the Global Fundamental Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Tom Gilbey", "prompts": 13, "title": "Investment Analyst", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Emily Barnard", "prompts": 5, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Fund Management - Global Innovation": {"prompts": 109, "active_users": 3, "total_users": 3, "adoption": 100.0, "people": [{"name": "James OConnor", "prompts": 72, "title": "Fund Manager", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Clare P-Bouverie", "prompts": 21, "title": "Co-Head of the Global Innovation Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}, {"name": "Storm Uru", "prompts": 16, "title": "Co-Head of the Global Innovation Team", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}]}, "Fund Management - Cashflow Solution": {"prompts": 53, "active_users": 2, "total_users": 2, "adoption": 100.0, "people": [{"name": "James Inglis-Jones", "prompts": 35, "title": "Co-Head Cashflow Solutions Team", "active": true, "active_jan_apr": true, "active_apr_may": false, "active_may_jun": true, "periods": 2}, {"name": "Samantha Gleave", "prompts": 18, "title": "Co-Head Cashflow Solutions Team", "active": true, "active_jan_apr": true, "active_apr_may": true, "active_may_jun": true, "periods": 3}]}};
+const COP_KPIS={"seats": 182, "active": 182, "adoption_pct": 100.0, "prompts": 52693, "avg": 290, "all_3": 153, "period": "Jan \u2013 Jun 2026"};
 const TREND=[{"month": "Nov 2025", "prompts": 2305, "active_users": 122}, {"month": "Dec 2025", "prompts": 4268, "active_users": 147}, {"month": "Jan 2026", "prompts": 8583, "active_users": 156}, {"month": "Feb 2026", "prompts": 8773, "active_users": 158}, {"month": "Mar 2026", "prompts": 13259, "active_users": 172}, {"month": "Apr 2026", "prompts": 11118, "active_users": 160}, {"month": "May 2026", "prompts": 10747, "active_users": 168}];
-const KPIS={"seats": 182, "active": 182, "adoption_pct": 100.0, "prompts": 52693, "avg": 290, "all_3": 153, "period": "Jan \u2013 Jun 2026"};
-const ALL_DEPTS=["Business Systems & Data", "Client Operations", "Client Service", "Compliance", "Corporate Development", "Facilities", "Finance", "Fund Management - Cashflow Solution", "Fund Management - Economic Advantage", "Fund Management - GFT", "Fund Management - Global Equities", "Fund Management - Global Innovation", "Fund Management - Multi-Asset", "Fund Management - Multi-Asset - Fixed Income", "Fund Management - Sustainable Investment", "Fund Management - Sustainable Investment - Fixed Income", "General Management", "HR", "IT & Infrastructure", "Investment Operations", "Legal & CoSec", "Marketing - Digital", "Marketing - Management & Content", "Marketing - Operations", "Performance", "Product, Stewardship and Governance", "Risk", "Sales"];
+const GPT_DEPT={"Fund Management - Global Equities": {"messages": 6132, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Ewan Thompson", "messages": 5128, "title": "Fund Manager", "active": true}, {"name": "Thomas Smith", "messages": 463, "title": "Fund Manager", "active": true}, {"name": "David Goodman", "messages": 274, "title": "Investment Manager, Global Equities Team", "active": true}, {"name": "Pieran Maru", "messages": 267, "title": "Fund Manager, Global Equities Team", "active": true}]}, "Fund Management - GFT": {"messages": 4590, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Gabriel Lever Grecu", "messages": 3370, "title": "Equity Analyst", "active": true}, {"name": "Tom Gilbey", "messages": 1009, "title": "Investment Analyst", "active": true}, {"name": "Imran Sattar", "messages": 183, "title": "Head of the Global Fundamental Team", "active": true}, {"name": "Emily Barnard", "messages": 28, "title": "Fund Manager", "active": true}]}, "Fund Management - Sustainable Investment": {"messages": 3215, "active_users": 7, "total_users": 7, "adoption": 100.0, "people": [{"name": "Ed Phelps", "messages": 1235, "title": "Investment Analyst", "active": true}, {"name": "Chris Foster", "messages": 772, "title": "Investment Manager", "active": true}, {"name": "Sarah Nottle", "messages": 475, "title": "Investment Analyst", "active": true}, {"name": "Martyn Jones", "messages": 376, "title": "Investment Manager", "active": true}, {"name": "Mingming Huang", "messages": 213, "title": "Portfolio Manager Assistant", "active": true}, {"name": "Simon Clements", "messages": 73, "title": "Investment Manager", "active": true}, {"name": "Harriet Parker", "messages": 71, "title": "Investment Manager", "active": true}]}, "IT & Infrastructure": {"messages": 2207, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "Murad Naqvi", "messages": 1406, "title": "IT Support Analyst", "active": true}, {"name": "Zakaria Reffas", "messages": 541, "title": "IT Support Analyst", "active": true}, {"name": "Justin Arrieta", "messages": 218, "title": "Head of IT Support and Workplace Experience", "active": true}, {"name": "Paul Mathanarajah", "messages": 42, "title": "Head of IT Infrastructure and Cyber Security", "active": true}]}, "Fund Management - Economic Advantage": {"messages": 1724, "active_users": 6, "total_users": 6, "adoption": 100.0, "people": [{"name": "Alex Wedge", "messages": 730, "title": "Fund Manager, Economic Advantage", "active": true}, {"name": "Matt Tonge", "messages": 451, "title": "Fund Manager", "active": true}, {"name": "Alex Game", "messages": 214, "title": "Fund Manager, Economic Advantage", "active": true}, {"name": "Natalie Bell", "messages": 148, "title": "Fund Manager", "active": true}, {"name": "Victoria Stevens", "messages": 142, "title": "Fund Manager", "active": true}, {"name": "Bobby Powar", "messages": 39, "title": "Fund Manager", "active": true}]}, "Fund Management - Sustainable Investment - Fixed Income": {"messages": 1574, "active_users": 5, "total_users": 5, "adoption": 100.0, "people": [{"name": "Deepesh Marwaha", "messages": 905, "title": "Investment Analyst", "active": true}, {"name": "Jack Willis", "messages": 258, "title": "Investment Manager", "active": true}, {"name": "Aitken Ross", "messages": 185, "title": "Investment Manager", "active": true}, {"name": "Connor Godsell", "messages": 183, "title": "Investment Manager", "active": true}, {"name": "Nancy Kondelidou", "messages": 43, "title": "Investment Analyst", "active": true}]}, "Business Systems & Data": {"messages": 1508, "active_users": 3, "total_users": 4, "adoption": 75.0, "people": [{"name": "Tobenna Agubuche", "messages": 1039, "title": "Junior Business Systems Analyst", "active": true}, {"name": "Abdi Osman", "messages": 443, "title": "Junior Business Systems Analyst", "active": true}, {"name": "Sarah Hymers", "messages": 26, "title": "Business Systems and AI Lead", "active": true}, {"name": "James Attwell", "messages": 0, "title": "Business Systems and AI Lead", "active": false}]}, "Fund Management - Multi-Asset": {"messages": 1356, "active_users": 4, "total_users": 4, "adoption": 100.0, "people": [{"name": "David Salisbury", "messages": 1023, "title": "Fund Analyst", "active": true}, {"name": "John Husselbee", "messages": 187, "title": "Head of Multi Asset", "active": true}, {"name": "James Klempster", "messages": 98, "title": "Deputy Head Of Multi-Asset & Head Of Equities, Multi-Asset Team", "active": true}, {"name": "Anthony Chemla", "messages": 48, "title": "Investment Manager, Multi-Asset Team", "active": true}]}, "Marketing - Management & Content": {"messages": 1269, "active_users": 4, "total_users": 5, "adoption": 80.0, "people": [{"name": "Kieran Patel", "messages": 852, "title": "Content Writer", "active": true}, {"name": "Cheryl Millar", "messages": 229, "title": "PA to Chief Marketing Officer", "active": true}, {"name": "David Aitken", "messages": 160, "title": "Investment Writing Editor", "active": true}, {"name": "Stephen Sheppard", "messages": 28, "title": "Content Marketing Editor", "active": true}, {"name": "Simon Hildrey", "messages": 0, "title": "Chief Marketing Officer", "active": false}]}, "Fund Management - Global Innovation": {"messages": 1238, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "James Oconnor", "messages": 1238, "title": "Fund Manager", "active": true}]}, "Risk": {"messages": 825, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "Richard White", "messages": 825, "title": "Senior Enterprise Risk Manager", "active": true}]}, "Client Service": {"messages": 805, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "Sam Norton", "messages": 805, "title": "UK Client Service", "active": true}]}, "Fund Management - Cashflow Solution": {"messages": 762, "active_users": 2, "total_users": 2, "adoption": 100.0, "people": [{"name": "James Inglis-Jones", "messages": 641, "title": "Co-Head Cashflow Solutions Team", "active": true}, {"name": "Samantha Gleave", "messages": 121, "title": "Co-Head Cashflow Solutions Team", "active": true}]}, "Fund Management - Multi-Asset - Fixed Income": {"messages": 674, "active_users": 2, "total_users": 2, "adoption": 100.0, "people": [{"name": "Sharmin Rahman", "messages": 451, "title": "Investment Manager, Multi Asset Team", "active": true}, {"name": "Donald Phillips", "messages": 223, "title": "Head Of Credit, Multi Asset Team", "active": true}]}, "Sales": {"messages": 331, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "Kristian Cook", "messages": 331, "title": "Head of Global Distribution", "active": true}]}, "Corporate Development": {"messages": 201, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "David Boyle", "messages": 201, "title": "Chief Strategy Officer", "active": true}]}, "Marketing - Digital": {"messages": 195, "active_users": 2, "total_users": 2, "adoption": 100.0, "people": [{"name": "Debora Barros", "messages": 190, "title": "Digital Marketing Executive", "active": true}, {"name": "Hayley Aronberg", "messages": 5, "title": "Head of Digital Marketing", "active": true}]}, "General Management": {"messages": 113, "active_users": 1, "total_users": 2, "adoption": 50.0, "people": [{"name": "Edward Catton", "messages": 113, "title": "Chief Operating Officer", "active": true}, {"name": "John Ions", "messages": 0, "title": "Chief Executive", "active": false}]}, "Marketing - Operations": {"messages": 17, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "Jacqueline Mckillion", "messages": 17, "title": "Literature Manager", "active": true}]}, "Compliance": {"messages": 11, "active_users": 1, "total_users": 1, "adoption": 100.0, "people": [{"name": "Milly Cooper", "messages": 11, "title": "Head of Compliance", "active": true}]}};
+const GPT_KPIS={"seats": 58, "active": 55, "adoption_pct": 94.8, "messages": 28747, "avg": 523, "period": "Jan \u2013 Jun 2026"};
 
 </script>
 <script>
-// ── CHART DEFAULTS ────────────────────────────────────────────
-const GRD = 'rgba(0,0,0,0.055)';
-Chart.defaults.color = '#475569';
-Chart.defaults.font.family = "'Inter',sans-serif";
-Chart.defaults.font.size = 11;
-const TT = {backgroundColor:'#fff',borderColor:'#d4daf0',borderWidth:1.5,titleColor:'#0f172a',bodyColor:'#334155',padding:10,cornerRadius:8};
+const GRD='rgba(0,0,0,0.055)';
+Chart.defaults.color='#475569';
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.font.size=11;
+const TT={backgroundColor:'#fff',borderColor:'#d4daf0',borderWidth:1.5,titleColor:'#0f172a',bodyColor:'#334155',padding:10,cornerRadius:8};
 
-// ── TREND CHART ───────────────────────────────────────────────
-(function(){
-  const labels  = TREND.map(t => t.month);
-  const prompts = TREND.map(t => t.prompts);
-  const active  = TREND.map(t => t.active_users);
-  const isPost2025 = labels.map(l => !l.includes('2025'));
+// ── TAB SWITCH ────────────────────────────────────────────────
+function showTab(n,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('tc','tg'));
+  document.getElementById('panel-'+n).classList.add('on');
+  el.classList.add(n==='cop'?'tc':'tg');
+}
 
-  new Chart('trend-chart', {
-    data: {
-      labels,
-      datasets: [
-        {
-          type: 'bar',
-          label: 'Total Prompts',
-          data: prompts,
-          backgroundColor: isPost2025.map(p => p ? 'rgba(30,64,175,0.75)' : 'rgba(30,64,175,0.22)'),
-          borderRadius: 7,
-          yAxisID: 'y',
-          order: 2,
-        },
-        {
-          type: 'line',
-          label: 'Active Users',
-          data: active,
-          borderColor: '#059669',
-          backgroundColor: 'rgba(5,150,105,0.07)',
-          borderWidth: 2.5,
-          pointBackgroundColor: '#059669',
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          tension: 0.4,
-          fill: true,
-          yAxisID: 'y2',
-          order: 1,
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: true,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: true, position: 'top', labels: { color:'#1e293b', padding:18, boxWidth:12, font:{weight:'600'} } },
-        tooltip: { ...TT, callbacks: {
-          label: c => c.dataset.label === 'Total Prompts'
-            ? ` ${c.raw.toLocaleString()} prompts`
-            : ` ${c.raw} active users`
-        }}
-      },
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#334155',font:{weight:'600'}} },
-        y: {
-          position: 'left', grid:{color:GRD},
-          ticks:{color:'#475569', callback: v => v.toLocaleString()},
-          title:{display:true, text:'Prompts', color:'#94a3b8', font:{size:10}}
-        },
-        y2: {
-          position: 'right', grid:{display:false},
-          ticks:{color:'#059669'},
-          title:{display:true, text:'Active Users', color:'#059669', font:{size:10}},
-          min: 80
-        }
-      }
+// ── KPI INIT ──────────────────────────────────────────────────
+function initKPIs(){
+  const c=COP_KPIS, g=GPT_KPIS;
+  document.getElementById('ck-seats').textContent   = c.seats.toLocaleString();
+  document.getElementById('ck-active').textContent  = c.active.toLocaleString();
+  document.getElementById('ck-adopt').textContent   = c.adoption_pct+'% of licensed seats';
+  document.getElementById('ck-prompts').textContent = c.prompts.toLocaleString();
+  document.getElementById('ck-period').textContent  = c.period+' combined';
+  document.getElementById('ck-avg').textContent     = c.avg.toLocaleString();
+  document.getElementById('ck-all3').textContent    = c.all_3.toLocaleString();
+
+  document.getElementById('gk-seats').textContent    = g.seats.toLocaleString();
+  document.getElementById('gk-active').textContent   = g.active.toLocaleString();
+  document.getElementById('gk-adopt').textContent    = g.adoption_pct+'% of licensed seats';
+  document.getElementById('gk-msgs').textContent     = g.messages.toLocaleString();
+  document.getElementById('gk-period').textContent   = g.period+' combined';
+  document.getElementById('gk-avg').textContent      = g.avg.toLocaleString();
+  document.getElementById('gk-inactive').textContent = (g.seats - g.active).toLocaleString();
+}
+
+// ── COPILOT TREND ─────────────────────────────────────────────
+new Chart('cop-trend',{
+  data:{
+    labels:TREND.map(t=>t.month),
+    datasets:[
+      {type:'bar',label:'Total Prompts',data:TREND.map(t=>t.prompts),
+       backgroundColor:TREND.map(t=>t.month.includes('2025')?'rgba(30,64,175,0.22)':'rgba(30,64,175,0.75)'),
+       borderRadius:6,yAxisID:'y',order:2},
+      {type:'line',label:'Active Users',data:TREND.map(t=>t.active_users),
+       borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.07)',borderWidth:2.5,
+       pointBackgroundColor:'#059669',pointRadius:5,tension:0.4,fill:true,yAxisID:'y2',order:1}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:true,position:'top',labels:{color:'#1e293b',padding:18,boxWidth:12,font:{weight:'600'}}},tooltip:TT},
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#334155',font:{weight:'600'}}},
+      y:{position:'left',grid:{color:GRD},ticks:{color:'#475569',callback:v=>v.toLocaleString()},title:{display:true,text:'Prompts',color:'#94a3b8',font:{size:10}}},
+      y2:{position:'right',grid:{display:false},ticks:{color:'#059669'},title:{display:true,text:'Active Users',color:'#059669',font:{size:10}},min:80}
+    }
+  }
+});
+
+// ── DEPT OVERVIEW CHARTS ──────────────────────────────────────
+let copDeptChart=null, gptDeptChart=null;
+
+function renderCopDeptChart(){
+  const metric=document.getElementById('cop-metric').value;
+  const sorted=Object.entries(COP_DEPT).sort((a,b)=>b[1][metric]-a[1][metric]).slice(0,20);
+  const labels=sorted.map(([d])=>d.replace('Fund Management - ','FM - ').replace('Marketing - ','Mkt - '));
+  if(copDeptChart) copDeptChart.destroy();
+  copDeptChart=new Chart('cop-dept-overview',{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Total Prompts',data:sorted.map(([,v])=>v.prompts),backgroundColor:'rgba(30,64,175,0.75)',borderRadius:5,yAxisID:'y',order:2},
+      {type:'line',label:'Active Users',data:sorted.map(([,v])=>v.active_users),borderColor:'#059669',backgroundColor:'transparent',borderWidth:2.5,pointBackgroundColor:'#059669',pointRadius:5,yAxisID:'y2',order:1}
+    ]},
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:true,position:'top',labels:{color:'#1e293b',padding:16,boxWidth:12,font:{weight:'600'}}},tooltip:TT},
+      scales:{x:{grid:{color:GRD},ticks:{color:'#475569'}},y:{grid:{display:false},ticks:{color:'#1e293b',font:{size:9,weight:'600'}}},y2:{position:'right',grid:{display:false},ticks:{color:'#059669'},min:0}}
     }
   });
-})();
+  document.getElementById('cop-dept-overview').parentElement.style.height=Math.max(340,sorted.length*24)+'px';
+}
 
-// ── DEPT OVERVIEW CHART ───────────────────────────────────────
-let deptChart = null;
-
-function renderDeptChart() {
-  const metric = document.getElementById('metric-sel').value;
-  const depts  = Object.entries(DEPT)
-    .sort((a,b) => b[1][metric] - a[1][metric])
-    .slice(0, 20);
-  const labels = depts.map(([d]) => d.replace('Fund Management - ','FM - ').replace('Marketing - ','Mkt - '));
-
-  if(deptChart) deptChart.destroy();
-  deptChart = new Chart('dept-overview', {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Total Prompts',
-          data: depts.map(([,v]) => v.prompts),
-          backgroundColor: 'rgba(30,64,175,0.75)',
-          borderRadius: 5,
-          yAxisID: 'y',
-          order: 2,
-        },
-        {
-          label: 'Active Users',
-          data: depts.map(([,v]) => v.active_users),
-          type: 'line',
-          borderColor: '#059669',
-          backgroundColor: 'transparent',
-          borderWidth: 2.5,
-          pointBackgroundColor: '#059669',
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          yAxisID: 'y2',
-          order: 1,
-        }
-      ]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: true, position: 'top', labels:{color:'#1e293b',padding:16,boxWidth:12,font:{weight:'600'}} },
-        tooltip: { ...TT, callbacks: {
-          label: c => c.dataset.label === 'Total Prompts'
-            ? ` ${c.raw.toLocaleString()} prompts`
-            : ` ${c.raw} active users`
-        }}
-      },
-      scales: {
-        x:  { grid:{color:GRD}, ticks:{color:'#475569'} },
-        y:  { grid:{display:false}, ticks:{color:'#1e293b', font:{size:9,weight:'600'}} },
-        y2: { position:'right', grid:{display:false}, ticks:{color:'#059669'}, min:0 }
-      }
+function renderGptDeptChart(){
+  const metric=document.getElementById('gpt-metric').value;
+  const sorted=Object.entries(GPT_DEPT).sort((a,b)=>b[1][metric]-a[1][metric]).slice(0,20);
+  const labels=sorted.map(([d])=>d.replace('Fund Management - ','FM - ').replace('Marketing - ','Mkt - '));
+  if(gptDeptChart) gptDeptChart.destroy();
+  gptDeptChart=new Chart('gpt-dept-overview',{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Total Messages',data:sorted.map(([,v])=>v.messages),backgroundColor:'rgba(5,150,105,0.75)',borderRadius:5,yAxisID:'y',order:2},
+      {type:'line',label:'Active Users',data:sorted.map(([,v])=>v.active_users),borderColor:'#1e40af',backgroundColor:'transparent',borderWidth:2.5,pointBackgroundColor:'#1e40af',pointRadius:5,yAxisID:'y2',order:1}
+    ]},
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:true,position:'top',labels:{color:'#1e293b',padding:16,boxWidth:12,font:{weight:'600'}}},tooltip:TT},
+      scales:{x:{grid:{color:GRD},ticks:{color:'#475569'}},y:{grid:{display:false},ticks:{color:'#1e293b',font:{size:9,weight:'600'}}},y2:{position:'right',grid:{display:false},ticks:{color:'#1e40af'},min:0}}
     }
   });
-  document.getElementById('dept-overview').parentElement.style.height = Math.max(340, depts.length * 24) + 'px';
+  document.getElementById('gpt-dept-overview').parentElement.style.height=Math.max(300,sorted.length*24)+'px';
 }
 
 // ── DEPT CARDS ────────────────────────────────────────────────
-let selectedDept = null;
-const maxPrompts = Math.max(...Object.values(DEPT).map(v => v.prompts));
+let copSelDept=null, gptSelDept=null;
 
-function renderDeptCards() {
-  const container = document.getElementById('dept-cards');
-  const sorted = Object.entries(DEPT).sort((a,b) => b[1].prompts - a[1].prompts);
-
-  container.innerHTML = sorted.map(([deptName, v]) => {
-    const pct = Math.round((v.prompts / maxPrompts) * 100);
-    const isSelected = deptName === selectedDept;
-    const shortName = deptName.replace('Fund Management - ','FM - ').replace('Marketing - ','Mkt - ');
-    return `<div class="dept-card${isSelected?' selected':''}" onclick="drillInto('${deptName.replace(/'/g,"\\'")}')">
-      <div class="dc-name">${shortName}</div>
-      <div class="dc-stats">
-        <div>
-          <div class="dc-prompts">${v.prompts.toLocaleString()}</div>
-          <div class="dc-prompts-lbl">Prompts</div>
-        </div>
-        <div class="dc-users">
-          <div class="dc-users-n">${v.active_users}</div>
-          <div class="dc-users-lbl">Active</div>
-        </div>
+function renderDeptCards(deptData, containerId, tool, metric, maxVal){
+  const sorted=Object.entries(deptData).sort((a,b)=>b[1][metric]-a[1][metric]);
+  const isCop=tool==='cop';
+  const el=document.getElementById(containerId);
+  el.innerHTML=sorted.map(([name,v])=>{
+    const val=isCop?v.prompts:v.messages;
+    const pct=Math.round((val/maxVal)*100);
+    const short=name.replace('Fund Management - ','FM - ').replace('Marketing - ','Mkt - ');
+    const sel=(isCop?copSelDept:gptSelDept)===name;
+    return `<div class="dc ${isCop?'kc':'kg'}${sel?(isCop?' sel-c':' sel-g'):''}" onclick="drillInto('${name.replace(/'/g,"\\'")}','${tool}')">
+      <div class="dc-name">${short}</div>
+      <div class="dc-row">
+        <div><div class="dc-main ${isCop?'vc':'vg'}">${val.toLocaleString()}</div><div class="dc-lbl">${isCop?'Prompts':'Messages'}</div></div>
+        <div class="dc-users"><div class="dc-users-n ${isCop?'vc':'vg'}">${v.active_users}</div><div class="dc-lbl">Active</div></div>
       </div>
-      <div class="dc-bar-wrap"><div class="dc-bar" style="width:${pct}%"></div></div>
-      <div class="dc-adopt">${v.adoption}% adoption (${v.active_users}/${v.total_users} users)</div>
+      <div class="dc-bw"><div class="dc-bar ${isCop?'bc':'bg'}" style="width:${pct}%"></div></div>
+      <div class="dc-adopt">${v.adoption}% adoption (${v.active_users}/${v.total_users})</div>
     </div>`;
   }).join('');
 }
 
-function drillInto(deptName) {
-  selectedDept = deptName;
-  renderDeptCards(); // re-render to update selected state
+function drillInto(deptName, tool){
+  const isCop=tool==='cop';
+  if(isCop) copSelDept=deptName; else gptSelDept=deptName;
+  const deptData=isCop?COP_DEPT:GPT_DEPT;
+  const maxVal=Math.max(...Object.values(isCop?COP_DEPT:GPT_DEPT).map(v=>isCop?v.prompts:v.messages));
+  renderDeptCards(deptData, isCop?'cop-dept-cards':'gpt-dept-cards', tool, isCop?'prompts':'messages', maxVal);
 
-  const v   = DEPT[deptName];
-  const champ = v.people[0];
-  const mx  = champ?.prompts || 1;
+  const v=deptData[deptName];
+  const ch=v.people[0];
+  const mx=isCop?ch?.prompts||1:ch?.messages||1;
+  const metricKey=isCop?'prompts':'messages';
+  const metricLabel=isCop?'prompts':'messages';
+  const drillEl=document.getElementById(isCop?'cop-drill':'gpt-drill');
 
-  let h = `<div class="drill-header">${deptName.replace('Fund Management - ','FM - ')}</div>
-    <div class="drill-sub">${v.active_users} active users &nbsp;·&nbsp; ${v.prompts.toLocaleString()} prompts &nbsp;·&nbsp; ${v.adoption}% adoption (Jan–Jun 2026)</div>`;
+  let h=`<div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--tx);margin-bottom:3px">${deptName.replace('Fund Management - ','FM - ')}</div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:14px">${v.active_users} active &nbsp;·&nbsp; ${(isCop?v.prompts:v.messages).toLocaleString()} ${metricLabel} &nbsp;·&nbsp; ${v.adoption}% adoption</div>`;
 
-  if(champ) {
-    h += `<div style="background:var(--al);border:1px solid rgba(180,83,9,.15);border-radius:8px;padding:12px 14px;margin-bottom:14px">
-      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--a);margin-bottom:4px">★ Department Champion</div>
-      <div style="font-size:14px;font-weight:700;color:var(--tx)">${champ.name}</div>
-      <div style="font-size:10px;color:var(--mu);margin-top:2px">${champ.title}</div>
-      <div class="champ-badge" style="margin-top:6px">★ ${champ.prompts.toLocaleString()} prompts &nbsp;·&nbsp; Jan–Jun 2026</div>
+  if(ch){
+    h+=`<div class="champ-wrap"><div class="champ-lbl">★ Department Champion</div>
+      <div class="champ-name">${ch.name}</div>
+      <div class="champ-title">${ch.title}</div>
+      <div class="champ-badge">★ ${(isCop?ch.prompts:ch.messages).toLocaleString()} ${metricLabel}</div>
     </div>`;
   }
 
-  v.people.forEach((p, i) => {
-    const tags = [
-      p.active_90d && p.active_30d ? '<span class="drill-tag dt-b">Both periods</span>' : '',
-      p.active_90d && !p.active_30d ? '<span class="drill-tag dt-i">Jan–Apr only</span>' : '',
-      !p.active_90d && p.active_30d ? '<span class="drill-tag dt-i">May–Jun only</span>' : '',
-      !p.active ? '<span class="drill-tag dt-i">Inactive</span>' : '',
-    ].join('');
-
-    h += `<div class="drill-row">
-      <div class="drill-rank">#${i+1}</div>
-      <div class="drill-info">
-        <div class="drill-name">${p.name}${tags}</div>
-        <div class="drill-title">${p.title}</div>
+  v.people.forEach((p,i)=>{
+    const val=isCop?p.prompts:p.messages;
+    h+=`<div class="dr-row">
+      <div class="dr-rank">#${i+1}</div>
+      <div class="dr-info">
+        <div class="dr-name">${p.name}<span class="tag ${p.active?'ta':'ti'}">${p.active?'Active':'Inactive'}</span></div>
+        <div class="dr-title">${p.title}</div>
       </div>
-      <div class="drill-bw"><div class="drill-bar" style="width:${Math.max(3,(p.prompts/mx)*100)}%"></div></div>
-      <div class="drill-val">${p.prompts.toLocaleString()}</div>
+      <div class="dr-bw"><div class="dr-bar ${isCop?'bc':'bg'}" style="width:${Math.max(3,(val/mx)*100)}%"></div></div>
+      <div class="dr-val">${val.toLocaleString()}</div>
     </div>`;
   });
 
-  document.getElementById('drill-content').innerHTML = h;
+  drillEl.innerHTML=h;
 }
 
-// ── INIT ─────────────────────────────────────────────────────
-document.getElementById('k-seats').textContent      = KPIS.seats.toLocaleString();
-document.getElementById('k-active').textContent     = KPIS.active.toLocaleString();
-document.getElementById('k-active-sub').textContent = KPIS.adoption_pct + '% of licensed seats';
-document.getElementById('k-prompts').textContent    = KPIS.prompts.toLocaleString();
-document.getElementById('k-period').textContent     = KPIS.period + ' combined';
-document.getElementById('k-avg').textContent        = KPIS.avg.toLocaleString();
-document.getElementById('k-all3').textContent       = KPIS.all_3.toLocaleString();
-renderDeptChart();
-renderDeptCards();
+// ── INIT ──────────────────────────────────────────────────────
+initKPIs();
+renderCopDeptChart();
+renderGptDeptChart();
+
+const copMax=Math.max(...Object.values(COP_DEPT).map(v=>v.prompts));
+const gptMax=Math.max(...Object.values(GPT_DEPT).map(v=>v.messages));
+renderDeptCards(COP_DEPT,'cop-dept-cards','cop','prompts',copMax);
+renderDeptCards(GPT_DEPT,'gpt-dept-cards','gpt','messages',gptMax);
 </script>
 </body>
-</html> 
+</html>
